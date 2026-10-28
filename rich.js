@@ -1,4 +1,4 @@
-/* D&L rich sections for the static preview (v4). Layout ideas only; all copy is original. Uses D, IMG, CAT, card, m, SHIP, STEPS from index.html. */
+/* D&L rich sections (v4). Layout ideas only; all copy is original. Uses D, IMG, CAT, card, m, SHIP, STEPS from index.html. */
 (function(){
 var esc=function(s){return String(s).replace(/"/g,'&quot;')};
 var from=function(p){var pr=p.v.filter(function(v){return v.p}).map(function(v){return v.p});return pr.length?Math.min.apply(null,pr):0};
@@ -44,7 +44,7 @@ window.HOME=function(){
  +NEWS+BAND;
 };
 window.bindHome=function(a){var r=a.querySelector('#rail');a.querySelectorAll('.arrow').forEach(function(b){b.onclick=function(){r.scrollBy({left:+b.dataset.dir*r.clientWidth*.8,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}});
- var f=a.querySelector('#nl');f.onsubmit=function(e){e.preventDefault();a.querySelector('#nlm').textContent='Thanks! (preview only, nothing was sent)';f.reset()}};
+ var f=a.querySelector('#nl');f.onsubmit=function(e){e.preventDefault();a.querySelector('#nlm').textContent='Thanks! You are on the list.';f.reset()}};
 window.PDPX={
  buy:function(p){return '<div class=micro><div><b>Made to order</b>From your photo</div><div><b>Secure checkout</b>Shopify checkout</div><div><b>Free shipping option</b>Pick speed at checkout</div><div><b>[Your guarantee]</b>Placeholder</div></div>'
   +'<div class=acc><details open><summary>Delivery options</summary><div><div class=deliv>'+SHIP.map(function(s){return '<div><b>'+s[0]+'</b>'+(s[1]?m(s[1]):'$0')+'</div>'}).join('')+'</div><p><small>Choose your speed at checkout. Made-to-order crystals are engraved before they ship.</small></p></div></details>'
