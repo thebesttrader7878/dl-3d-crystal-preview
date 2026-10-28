@@ -57,3 +57,9 @@ h1{font-size:clamp(2.1rem,7vw,4.2rem);line-height:1.05;letter-spacing:-.01em;fon
 .cd__sub{justify-content:space-between}
 form input{margin-left:auto;margin-right:auto}
 }
+
+@media (max-width:768px){
+  .stat,.hero .stat,p.stat,.meta,.price-row,.chips,.tags,.badges,.cta-row,.trustline,.hero__grid>div{justify-content:center!important;text-align:center!important}
+  .stat{display:flex;flex-wrap:wrap;gap:.3em;width:100%}
+  small,.small,.muted,.note,.fine,.caption,.sub{text-align:center!important}
+}
