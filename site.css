@@ -346,3 +346,4 @@ body.menu-open{overflow:hidden}
 .zb__x{top:14px;right:14px}.zb__a--p{left:12px;top:50%;transform:translateY(-50%)}.zb__a--n{right:12px;top:50%;transform:translateY(-50%)}
 .zb__c{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);color:#fff;font-size:.9rem}
 @media(prefers-reduced-motion:reduce){.zb__st img{transition:none}}
+.qrow span{text-align:left;flex:1}.qrow input[type=radio]{width:20px;height:20px;flex:0 0 auto}

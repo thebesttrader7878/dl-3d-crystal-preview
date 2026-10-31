@@ -48,25 +48,25 @@ function shop(cat){var cats=['All'].concat(Object.keys(CAT).map(function(k){retu
 function bindShop(a,cat){var g=$('#sg',a),orig=$$('.card',g);var f=function(c){$$('.chip',a).forEach(function(x){x.setAttribute('aria-pressed',x.dataset.c===c)});orig.forEach(function(x){x.hidden=!(c==='All'||x.dataset.cat===c)})};
  $$('.chip',a).forEach(function(b){b.onclick=function(){f(b.dataset.c)}});if(cat)f(cat);
  $('#sort',a).onchange=function(){var v=this.value,l=orig.slice();if(v!=='f')l.sort(function(x,y){return (v==='lo'?1:-1)*(x.dataset.price-y.dataset.price)});l.forEach(function(x){g.appendChild(x)})}}
-function pdp(p){var desk=DESK.indexOf(p.tpl)>-1,glow=desk||p.tpl==='prestige',imgs=(IMG[p.h]||[]).concat(SZ[p.h]||[]).filter(function(v,i,a){return a.indexOf(v)===i});
+function pdp(p){var O=OPT[p.h]||{};var desk=DESK.indexOf(p.tpl)>-1,glow=desk||p.tpl==='prestige',imgs=(IMG[p.h]||[]).concat(SZ[p.h]||[]).filter(function(v,i,a){return a.indexOf(v)===i});
  var rel=D.filter(function(x){return x.h!==p.h&&from(x)&&CAT[x.tpl]===CAT[p.tpl]});D.forEach(function(x){if(x.h!==p.h&&from(x)&&rel.indexOf(x)<0)rel.push(x)});
  var kc=pick('3d-crystal-keychain-rectangle'),kp=kc&&from(kc);
  var bv=-1,bo=0;p.v.forEach(function(v,i){if(v.p&&v.c){var o=1-v.p/v.c;if(o>bo){bo=o;bv=i}}});
  var shapes=D.filter(function(x){return CAT[x.tpl]===CAT[p.tpl]&&from(x)});
- var lab=function(v){return ((v.t.match(/^[A-Za-z][A-Za-z ]*?(?= ?[\d~]|$)/)||['Standard'])[0]||'Standard')};
- var dims=function(v){var d=v.t.replace(/^[A-Za-z][A-Za-z ]*?(?= ?[\d~]|$)/,'').trim();return d||v.t};
+ var lab=function(v){if(v.n)return v.n;return ((v.t.match(/^[A-Za-z][A-Za-z ]*?(?= ?[\d~]|$)/)||['Standard'])[0]||'Standard')};
+ var dims=function(v){if(v.n)return v.dm||'';var d=v.t.replace(/^[A-Za-z][A-Za-z ]*?(?= ?[\d~]|$)/,'').trim();return d||v.t};
  var tab=function(id,t,on){return '<button type=button role=tab class="tb'+(on?' on':'')+'" data-t='+id+'>'+t+'</button>'};
  return '<div class=wrap><nav class=crumbs><a href="#/">Home</a> / <a href="#/shop/'+encodeURIComponent(CAT[p.tpl])+'">'+CAT[p.tpl]+'</a> / '+p.t+'</nav><div class=pdp>'
  +'<div class=gal>'+galHTML(imgs,p,off(p))+(SVG[p.h]?SVG[p.h].replace(/class=\\?"sz/g,'class="sz')+'<p class=cap>Sizes drawn to scale. Your pick is highlighted.</p>':'')+'<p class=cap>Sample photo shown inside. Yours will carry your own photo.</p></div>'
  +'<div class=buy><span class=eyebrow>'+CAT[p.tpl]+'</span><h1>'+p.t+'</h1>'+(window.REVS?'<p class=rrow><a href="javascript:void(0)" data-open=desc data-rev=1><span class=stars>&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.8 ('+REVS.length+' reviews)</a> <i class=stag>sample</i></p>':'')+'<div class=price id=price></div><p class=dl>&#9201; Made to order. Have a gift date? Order early and pick a faster speed at checkout.</p>'
  +(shapes.length>1?'<div class=blk><h3>Shape <small>'+p.t.replace(/^3D |^2D /,'')+'</small></h3><div class=shp>'+shapes.map(function(x){return '<a href="#/p/'+x.h+'"'+(x.h===p.h?' aria-current=true':'')+' title="'+x.t+'"><img src="'+img(x.h)+'" alt="'+x.t+'" width=56 height=56 loading=lazy></a>'}).join('')+'</div></div>':'')
- +'<div class=blk><h3>1. Upload your photo</h3><label class=drop><input type=file id=photo accept="image/*"><span class=pv id=pv>&#8682;</span><span><b id=pvn>Tap to upload your photo</b><small>JPG or PNG. Clear faces, good light. Any phone photo works.</small></span></label><div class=crop-row id=croprow hidden><button type=button class="btn btn--ghost" id=cropbtn>Crop and zoom</button><label class=chk><input type=checkbox id=skipcrop> Skip, let the designer crop it</label></div>'
+ +'<div class=blk><h3>1. Upload your photo</h3><label class=drop><input type=file id=photo accept="image/*"'+(O.photoReq?' required':'')+'><span class=pv id=pv>&#8682;</span><span><b id=pvn>Tap to upload your photo</b><small>JPG or PNG. Clear faces, good light. Any phone photo works.</small></span></label><div class=crop-row id=croprow hidden><button type=button class="btn btn--ghost" id=cropbtn>Crop and zoom</button><label class=chk><input type=checkbox id=skipcrop> Skip, let the designer crop it</label></div>'
  +'<div class=prev id=prev hidden><div class=prev__tg><button type=button class=on data-m=2d>2D view</button><button type=button data-m=3d>3D view</button></div><div class=prev__st><div class=prev__c id=pc><img id=pimg alt="Rough preview of your photo in crystal"></div></div><p class=cap>Rough on-screen idea only. '+'You get a free photo preview before we engrave.'+'</p></div>'
- +'</div>'+'<div class=blk><h3>2. Choose size <small id=fits></small></h3><div class=sizes>'+p.v.map(function(v,i){return '<label class=szc><input type=radio name=v value='+i+(i?'':' checked')+'>'+(i===bv?'<i class=tag>Best value</i>':'')+'<b>'+lab(v)+'</b><small>'+dims(v)+'</small><em>'+(v.p?(v.c?'<s>'+m(v.c)+'</s> ':'')+m(v.p):'Soon')+'</em></label>'}).join('')+'</div><button type=button class=lnk data-open=specs>Size guide</button></div>'
+ +'</div>'+'<div class=blk><h3>2. Choose size <small id=fits></small></h3><div class=sizes>'+p.v.map(function(v,i){return '<label class=szc><input type=radio name=v value='+i+(i?'':' checked')+(O.sizeReq?' required':'')+'>'+(i===bv?'<i class=tag>Best value</i>':'')+'<b>'+lab(v)+'</b><small>'+dims(v)+'</small><em>'+(v.p?(v.c?'<s>'+m(v.c)+'</s> ':'')+m(v.p):'Soon')+'</em></label>'}).join('')+'</div><button type=button class=lnk data-open=specs>Size guide</button></div>'
  +'<div class=blk id=baseblk hidden><h3>3. Light base <small>optional</small></h3><label class=add><input type=checkbox id=wantbase><span><b>Add a light base</b><small>Lights your crystal from below so the engraving glows. Bases shown fit this crystal.</small></span></label><div class=bases id=bases hidden></div></div>'
  +'<div class=blk><h3><span id=addn>4</span>. Personalize it <small>optional</small></h3><div class=addons id=addons></div></div>'
- +'<div class=blk><h3>Special instructions <small>optional</small></h3><textarea class=field id=spec maxlength=300 placeholder="Anything our designer should know, like who to keep, what to remove or a date you need it by"></textarea></div>'
- +'<div class=runtot><span>Your total</span><b id=rt></b></div><p class=bnpl id=bnpl></p>'
+ +(O.spec?'<div class=blk><h3>Special instructions <small>optional</small></h3><textarea class=field id=spec'+(O.spec.maxlen?' maxlength='+O.spec.maxlen:'')+' placeholder="Anything our designer should know, like who to keep, what to remove or a date you need it by"></textarea></div>':'')
+ +'<p class=cap>Every crystal ships in a gift box at no charge.</p><div class=runtot><span>Your total</span><b id=rt></b></div><p class=bnpl id=bnpl></p>'
 +'<div class=buybtns id=sum><div class=qty><button type=button id=qm aria-label="Less">&minus;</button><input id=q type=number min=1 max=20 value=1 aria-label=Quantity><button type=button id=qp aria-label="More">+</button></div><button class="btn btn--block" id=add>Add to cart</button><button class="btn btn--ghost btn--block" id=buynow type=button>Buy it now</button><p class=err id=err role=alert></p></div>'
  +'<div class=pay><span>Visa</span><span>Mastercard</span><span>Amex</span><span>Discover</span><span>Apple Pay</span><span>Google Pay</span></div><p class=cap style="text-align:center">Secure checkout. '+'All major cards accepted'+'</p>'
  +'<div class=ti><div><span>&#10024;</span><b>Made to order</b></div><div><span>&#127482;&#127480;</span><b>Made in USA</b>'+'Proudly'+'</div><div><span>&#128666;</span><b>Free shipping option</b></div><div><span>&#8617;</span><b>Returns</b>'+'30-day guarantee'+'</div></div></div></div></div>'
@@ -81,7 +81,7 @@ function pdp(p){var desk=DESK.indexOf(p.tpl)>-1,glow=desk||p.tpl==='prestige',im
  +'<section class=section><div class=wrap>'+sh('You may also like','Pairs well with this','')+'<div class=grid data-stagger>'+rel.slice(0,4).map(function(x){return card(x)}).join('')+'</div></div></section>'
  +'<section class="section section--pearl"><div class=wrap>'+sh('FAQ',p.t+' questions','')+faq(FAQS)+'</div></section>'
  +'<div class=sbar id=sbar><div class=sbar__i><b id=sbp></b><small id=sbs></small></div><button class=btn id=sbadd>Add to cart</button></div>'}
-function bindPdp(a,p){var cur=function(){var e=$('[name=v]:checked',a);return e?+e.value:0};
+function bindPdp(a,p){a.dataset.ph=p.h;var cur=function(){var e=$('[name=v]:checked',a);return e?+e.value:0};
  bindGal(a,p);
  var showTab=function(t){$$('.tb',a).forEach(function(b){b.classList.toggle('on',b.dataset.t===t)});$$('.tp',a).forEach(function(x){x.classList.toggle('on',x.dataset.p===t)})};
  $$('.tb',a).forEach(function(b){b.onclick=function(){showTab(b.dataset.t)}});
@@ -94,34 +94,40 @@ function bindPdp(a,p){var cur=function(){var e=$('[name=v]:checked',a);return e?
 
  $$('.prev__tg button',a).forEach(function(b){b.onclick=function(){$$('.prev__tg button',a).forEach(function(x){x.classList.toggle('on',x===b)});$('#pc').classList.toggle('is3d',b.dataset.m==='3d')}});
  $('#photo').onchange=function(){var f=this.files[0];if(!f)return;$('#pvn').textContent=f.name;$('#err').textContent='';var r=new FileReader();r.onload=function(){$('#pv').innerHTML='<img src="'+r.result+'" alt="Your photo">';$('#pimg').src=r.result;$('#prev').hidden=false};r.readAsDataURL(f)};
- var R=RULES(p),ext=null,crop=null;
+ var O=OPT[p.h]||{order:[]},R={base:!!O.base},ext=null,crop=null,vfile=null;
  var sv=$('.scale',a);if(p.svgSkip!=null)$$('.scale .sz',a).forEach(function(g){var k=+g.dataset.i;if(k>=p.svgSkip)g.dataset.i=k+1});
- var adds=[];if(R.text)adds.push(['text','<input class=field id=engt maxlength=60 placeholder="Names, a date, or a short message">']);
- adds.push(['keepbg','<small>Background is removed for free so faces pop. Keep it only if the scene matters, and avoid plain walls or empty sky.</small>']);
- adds.push(['review','<small>We email you a placement proof to approve before engraving. Adds about 3 days.</small>']);
- if(R.base)adds.push(['video','<small>Needs a light base. We add a QR code that plays your video.</small><input class=field id=vlink placeholder="Paste a YouTube or video link">']);
- adds.push(['magnet','<small>A metal keepsake note with a magnet, packed with your gift. Not engraved in the crystal.</small><input class=field id=mtext maxlength=120 placeholder="Your note">']);
- if(R.ornament)adds.push(['stand','<small>Display your ornament on a desk or shelf all year.</small>']);
- var ad=$('#addons',a);ad.innerHTML=adds.map(function(x){var o=ADDON[x[0]];return '<label class="add addx"><input type=checkbox data-ad='+x[0]+'><span><b>'+o[0]+' <i>+'+m(o[1])+'</i></b><div class=addx__more>'+x[1]+'</div></span></label>'}).join('')
-  +'<details class=addg><summary>Keychain copies of your photo</summary>'+KEYCOPY.map(function(k){return '<label class=qrow><span>'+k[1]+' <i>+'+m(k[2])+'</i></span><input type=number min=0 max=20 value=0 data-kc='+k[0]+' aria-label="'+k[1]+' quantity"></label>'}).join('')+'</details>'
-  +(R.cards?'<details class=addg><summary>3D pop-up greeting cards</summary>'+CARDS.map(function(k){return '<label class=qrow><span>'+k[1]+' <i>+'+m(k[2])+'</i></span><input type=number min=0 max=20 value=0 data-card='+k[0]+' aria-label="'+k[1]+' quantity"></label>'}).join('')+'</details>':'')
-  +(R.plaque?'<label class=add><input type=checkbox checked disabled><span><b>Silver stand</b><small>Included free</small></span></label>':'')
-  +'<label class=add><input type=checkbox checked disabled><span><b>Gift box included</b><small>Every crystal ships gift-ready at no charge.</small></span></label>';
+ var NM={stand:'Ornament stand',video:'Video message QR code',text:'Text engraving',keepbg:'Keep the background',review:'Artwork review and approval',magnet:'Magnetic etched gift note'};
+ var MORE={stand:'<small>Display your ornament on a desk or shelf all year.</small>',
+  video:'<small>Needs a light base. Upload a short video and we add a QR code that plays it.</small><input class=field type=file id=vfile accept="'+(O.videoAccept||'.mov,.mp4,.3gp')+'">',
+  text:'<small>Names, a date or a short line, engraved with the photo.</small><input class=field id=engt placeholder="First line"><input class=field id=engt2 placeholder="Second line (optional)">',
+  keepbg:'<small>Background is removed for free so faces pop. Keep it only if the scene matters, and avoid plain walls or empty sky.</small>',
+  review:'<small>We email you a placement proof to approve before engraving. Adds about 3 days.</small>',
+  magnet:'<small>A metal keepsake note with a magnet, packed with your gift. Not engraved in the crystal.</small><textarea class=field id=mtext placeholder="Your note"></textarea>'};
+ var kcs=O.kc||[],cds=O.cards;
+ var ad=$('#addons',a),H='',kcOpen=0;
+ O.order.forEach(function(k){
+  if(NM[k]&&O[k]!=null){if(kcOpen){H+='</details>';kcOpen=0}H+='<label class="add addx"><input type=checkbox data-ad='+k+'><span><b>'+NM[k]+' <i>+'+m(O[k])+'</i></b><div class=addx__more>'+MORE[k]+'</div></span></label>'}
+  else if(k.indexOf('kc-')===0){var c=kcs.filter(function(x){return 'kc-'+x[0]===k})[0];if(!c)return;if(!kcOpen){H+='<details class=addg><summary>Keychain copies of your photo</summary>';kcOpen=1}H+='<label class=qrow><span>'+c[1]+' <i>+'+m(c[2])+'</i></span><input type=number min=0 max=20 value=0 data-kc='+c[0]+' aria-label="'+c[1]+' quantity"></label>'}
+  else if(k==='cards'&&cds){if(kcOpen){H+='</details>';kcOpen=0}H+='<details class=addg><summary>3D pop-up greeting card</summary><label class=qrow><span>No card</span><input type=radio name=card value="" checked></label>'+cds.opts.map(function(c){return '<label class=qrow><span>'+c[1]+' <i>'+(c[3]>c[2]?'<s>'+m(c[3])+'</s> ':'')+'+'+m(c[2])+'</i></span><input type=radio name=card value='+c[0]+'></label>'}).join('')+(cds.qty?'<label class=qrow><span>Card quantity</span><input type=number min=1 max=20 value=1 id=cardq aria-label="Card quantity"></label>':'')+'</details>'}});
+ if(kcOpen)H+='</details>';
+ ad.innerHTML=H;
  $('#addn',a).textContent=R.base?'4':'3';
- var baseIds=function(){var i=cur(),s=BASE_BY_SIZE[p.h];return ((s&&s[i])||BASE_FOR[p.h]||[]).slice().sort(function(x,y){return BASES[x][1]-BASES[y][1]})};
- var drawBases=function(){if(!R.base)return;var L0=baseIds();$('#baseblk',a).hidden=!L0.length;if(!L0.length){$('#wantbase',a).checked=false;$('#bases',a).hidden=true}var sel=($('[name=base]:checked',a)||{}).value;$('#bases',a).innerHTML=baseIds().map(function(id,k){var b=BASES[id];return '<label class=bopt><input type=radio name=base value='+id+((sel?sel===id:!k)?' checked':'')+'><span>'+b[0]+'</span><b>'+(b[1]?'+'+m(b[1]):'Included')+'</b></label>'}).join('')};
+ var baseIds=function(){var s=O.base;return s?(s.per[cur()]||[]):[]};
+ var bInfo=function(id){return (O.base.all.filter(function(x){return x[0]===id})[0])||[id,'',0]};
+ var drawBases=function(){if(!R.base)return;var L0=baseIds();$('#baseblk',a).hidden=!L0.length;if(!L0.length){$('#wantbase',a).checked=false;$('#bases',a).hidden=true}var sel=($('[name=base]:checked',a)||{}).value;if(L0.indexOf(sel)<0)sel=null;$('#bases',a).innerHTML=L0.map(function(id,k){var b=bInfo(id);return '<label class=bopt><input type=radio name=base value='+id+((sel?sel===id:!k)?' checked':'')+'><span>'+b[1]+'</span><b>'+(b[2]?'+'+m(b[2]):'Included')+'</b></label>'}).join('')};
  drawBases();
  if($('#wantbase',a))$('#wantbase',a).onchange=function(){$('#bases',a).hidden=!this.checked;tot()};
+ var vf=$('#vfile',a);if(vf)vf.onchange=function(){vfile=this.files[0]||null};
  var on=function(k){var x=$('[data-ad='+k+']',a);return x&&x.checked};
  var lines=function(){var i=cur(),v=p.v[i],L=[];
-  if(R.base&&$('#wantbase',a)&&$('#wantbase',a).checked){var bb=$('[name=base]:checked',a);if(bb)L.push({k:'base',t:BASES[bb.value][0],p:BASES[bb.value][1],per:1})}
-  Object.keys(ADDON).forEach(function(k){if(on(k)){if(k==='video'&&!(R.base&&$('#wantbase').checked))return;L.push({k:k,t:ADDON[k][0],p:ADDON[k][1],per:1})}});
-  $$('[data-kc]',a).forEach(function(x){var n=+x.value||0;if(n>0){var k=KEYCOPY.filter(function(y){return y[0]===x.dataset.kc})[0];L.push({k:'kc-'+k[0],t:k[1],p:k[2],q:n})}});
-  $$('[data-card]',a).forEach(function(x){var n=+x.value||0;if(n>0){var k=CARDS.filter(function(y){return y[0]===x.dataset.card})[0];L.push({k:'card-'+k[0],t:k[1],p:k[2],q:n})}});
+  if(R.base&&$('#wantbase',a)&&$('#wantbase',a).checked){var bb=$('[name=base]:checked',a);if(bb){var b=bInfo(bb.value);L.push({k:'base',t:b[1],p:b[2],per:1})}}
+  O.order.forEach(function(k){if(NM[k]&&O[k]!=null&&on(k)){if(k==='video'&&!(R.base&&$('#wantbase').checked))return;L.push({k:k,t:NM[k],p:O[k],per:1})}});
+  $$('[data-kc]',a).forEach(function(x){var n=+x.value||0;if(n>0){var k=kcs.filter(function(y){return y[0]===x.dataset.kc})[0];L.push({k:'kc-'+k[0],t:k[1],p:k[2],q:n})}});
+  var cr=$('[name=card]:checked',a);if(cr&&cr.value){var c=cds.opts.filter(function(y){return y[0]===cr.value})[0],cq=$('#cardq',a);L.push({k:'card-'+c[0],t:c[1],p:c[2],q:cq?Math.max(1,+cq.value||1):1})}
   return L};
- var tot=function(){if(!a.isConnected||!$('#rt',a)||!$('[name=v]',a))return;var v=p.v[cur()],n=Math.max(1,+q.value||1),s=v.p*n;lines().forEach(function(l){s+=l.p*(l.per?n:l.q)});$('#rt').textContent=m(s);$('#bnpl').innerHTML=s>=35?'or 4 interest-free payments of <b>'+m(Math.round(s/4*100)/100)+'</b> with <b>Afterpay</b> or <b>Klarna</b>':'';
+ var tot=function(){if(!a.isConnected||!$('#rt',a)||!$('[name=v]',a)||a.dataset.ph!==p.h||!p.v[cur()])return;var v=p.v[cur()],n=Math.max(1,+q.value||1),s=v.p*n;lines().forEach(function(l){s+=l.p*(l.per?n:l.q)});$('#rt').textContent=m(s);$('#bnpl').innerHTML=s>=35?'or 4 interest-free payments of <b>'+m(Math.round(s/4*100)/100)+'</b> with <b>Afterpay</b> or <b>Klarna</b>':'';
   var vw=$('[data-ad=video]',a);if(vw){var ok=$('#wantbase').checked;vw.disabled=!ok;if(!ok)vw.checked=false;vw.closest('label').classList.toggle('dis',!ok)}};
- a.addEventListener('change',function(e){if(e.target.name==='v')drawBases();tot()});a.addEventListener('input',tot);$('#qm').addEventListener('click',function(){setTimeout(tot)});$('#qp').addEventListener('click',function(){setTimeout(tot)});tot();
+ a.addEventListener('change',function(e){if(a.dataset.ph!==p.h)return;if(e.target.name==='v')drawBases();tot()});a.addEventListener('input',tot);$('#qm').addEventListener('click',function(){setTimeout(tot)});$('#qp').addEventListener('click',function(){setTimeout(tot)});tot();
  /* photo crop */
  var modal=document.createElement('div');modal.className='cropm';modal.hidden=true;modal.innerHTML='<div class=cropm__b role=dialog aria-modal=true aria-label="Crop and zoom your photo"><h3>Crop and zoom</h3><p class=cap>Drag to move. Pinch or scroll to zoom. Keep faces large.</p><div class=cropm__s><img id=cimg alt="Your photo to crop"></div><div class=cropm__f><button type=button class="btn btn--ghost" id=cno>Cancel</button><button type=button class=btn id=cok>Save and close</button></div></div>';a.appendChild(modal);
  var openCrop=function(src){$('#cimg',modal).src=src;modal.hidden=false;if(crop)crop.destroy();if(window.Cropper)crop=new Cropper($('#cimg',modal),{viewMode:1,autoCropArea:1,dragMode:'move'})};
@@ -130,9 +136,11 @@ function bindPdp(a,p){var cur=function(){var e=$('[name=v]:checked',a);return e?
  $('#photo').addEventListener('change',function(){var f=this.files[0];if(!f)return;ext=null;$('#croprow').hidden=false;var r=new FileReader();r.onload=function(){openCrop(r.result)};r.readAsDataURL(f)});
  $('#cropbtn').onclick=function(){var f=$('#photo').files[0];if(!f)return;var r=new FileReader();r.onload=function(){openCrop(r.result)};r.readAsDataURL(f)};
  var add=function(go){var f=$('#photo').files[0];if(!f){$('#err').textContent='Please upload your photo first.';$('.drop').scrollIntoView({block:'center',behavior:'smooth'});return}
+  var need=function(c,msg,el){if(c){$('#err').textContent=msg;if(el)el.scrollIntoView({block:'center',behavior:'smooth'});return 1}};
+  if(need(on('text')&&!$('#engt').value.trim(),'Please enter the first line of your engraving text.',$('#engt'))||need(on('magnet')&&!$('#mtext').value.trim(),'Please write your gift note.',$('#mtext'))||need(on('video')&&!vfile,'Please upload your video file.',$('#vfile')))return;
   var i=cur(),v=p.v[i],n=Math.max(1,Math.min(20,+q.value||1)),bid='b'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
   var props={Photo:f.name,Crop:ext?ext.box:($('#skipcrop').checked?'Designer crops':'Not cropped'),Background:on('keepbg')?'Keep background':'Remove background'};
-  if(on('text')&&$('#engt').value)props['Engraved text']=$('#engt').value;if(on('magnet')&&$('#mtext').value)props['Gift note']=$('#mtext').value;if(on('video')&&$('#vlink').value)props['Video link']=$('#vlink').value;if($('#spec').value)props['Special instructions']=$('#spec').value;if(R.plaque)props['Stand']='Free silver stand';
+  if(on('text'))props['Engraved text']=$('#engt').value.trim()+($('#engt2').value.trim()?' / '+$('#engt2').value.trim():'');if(on('magnet'))props['Gift note']=$('#mtext').value.trim();if(on('video')&&vfile)props['Video file']=vfile.name;if($('#spec')&&$('#spec').value)props['Special instructions']=$('#spec').value;
   var c=CD.get();c.push({t:p.t,o:v.t,p:v.p,props:props,q:n,img:(ext&&ext.thumb)||(SZ[p.h]&&SZ[p.h][i])||img(p.h),bid:bid});
   lines().forEach(function(l){c.push({t:l.t,o:'Add-on for '+p.t,p:l.p,props:{},q:l.per?n:l.q,per:l.per?1:0,parent:bid,img:''})});
   CD.put(c);if(go){location.hash='#/checkout';return}CD.open(p.t+', '+v.t)};
