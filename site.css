@@ -312,7 +312,7 @@ body.menu-open{overflow:hidden}
 .trust{background:#FBF7EC;border-bottom:1px solid var(--line)}
 .trust__r{display:flex;gap:22px;overflow-x:auto;white-space:nowrap;justify-content:flex-start;padding:8px 16px;font-size:.8rem;color:#334155;scrollbar-width:none}
 .trust__r::-webkit-scrollbar{display:none}.trust__r span{color:#0f5132}
-@media (max-width:359px){.hdr .logo img{display:none}}
+
 @media (min-width:1000px){.menubtn__t{display:inline}.menubtn{padding:0 16px}
  .hdr .wrap.hdr__row{grid-template-columns:auto auto 1fr auto;height:72px}.hdr--s .wrap.hdr__row{height:62px}
  .hdr .logo{justify-self:start}.hdr .logo img{width:40px;height:40px}
@@ -395,3 +395,12 @@ input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px!impo
 .android .ann__r{height:44px}.android .trust__r{min-height:44px;align-items:center;padding-top:0;padding-bottom:0}
 .android .qty button{width:44px;height:44px}.android .qty input{height:44px}
 @media (max-width:340px){.android .cropm__b{padding:14px}.android .cropm__f .btn{padding-left:14px;padding-right:14px;white-space:nowrap;font-size:.95rem}.android .cropm__f #cok{flex:1}}
+
+/* v25 header: bigger logo, always visible */
+html,body{overflow-x:clip}
+.hdr__row{height:76px!important}
+.hdr .logo{gap:8px;min-width:0}
+.hdr .logo img{display:block!important;flex:0 0 auto;width:53px!important;height:56px!important;object-fit:contain}
+.hdr .logo span{white-space:nowrap;font-size:clamp(1.15rem,5.6vw,1.6rem)!important;line-height:1.1}
+@media (max-width:359px){.hdr .logo img{width:46px!important;height:48px!important}.hdr .logo{gap:6px}.hdr .logo span{font-size:1.12rem!important}}
+@media (min-width:900px){.hdr__row{height:88px!important}.hdr .logo img{width:66px!important;height:70px!important}.hdr .logo span{font-size:1.9rem!important}}
