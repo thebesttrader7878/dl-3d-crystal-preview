@@ -377,3 +377,4 @@ body{background:var(--bg)}a{color:var(--royal)}
 .ftr{background:#1B2F6B!important;color:#E9E4D6!important;border-top:4px solid #C9A54C}.ftr a{color:#F4EEE0!important}.ftr h4,.ftr b,.ftr h3{color:#E2C275!important}.ftr p,.ftr small{color:#D9D4C6!important}.ftr .pay span{background:rgba(255,255,255,.08);color:#F4EEE0;border-color:rgba(226,194,117,.4)}
 .ainf{border-color:#C9A54C;color:#1B2F6B}
 .cartbtn__n{background:#C9A54C!important;color:#1B2F6B!important}
+.logo img{box-shadow:none!important}.wrap.page{padding-left:20px;padding-right:20px}
