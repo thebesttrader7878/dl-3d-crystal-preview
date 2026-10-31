@@ -404,3 +404,6 @@ html,body{overflow-x:clip}
 .hdr .logo span{white-space:nowrap;font-size:clamp(1.15rem,5.6vw,1.6rem)!important;line-height:1.1}
 @media (max-width:359px){.hdr .logo img{width:46px!important;height:48px!important}.hdr .logo{gap:6px}.hdr .logo span{font-size:1.12rem!important}}
 @media (min-width:900px){.hdr__row{height:88px!important}.hdr .logo img{width:66px!important;height:70px!important}.hdr .logo span{font-size:1.9rem!important}}
+
+/* v27 bolder wordmark */
+.hdr .logo span{font-weight:700;color:#14245A;letter-spacing:.01em}
