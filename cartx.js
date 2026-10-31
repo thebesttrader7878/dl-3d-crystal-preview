@@ -5,7 +5,7 @@ const el=document.createElement('div');el.innerHTML='<div class=cd-ov data-cd-cl
 document.body.append(...el.children);
 function norm(c){const ids=new Set(c.filter(i=>i.bid).map(i=>i.bid));c=c.filter(i=>!i.parent||ids.has(i.parent));c.forEach(i=>{i.q=i.q||1;if(i.parent&&i.per){const pa=c.find(x=>x.bid===i.parent);if(pa)i.q=pa.q}});return c}
 const get=()=>norm(JSON.parse(localStorage.cart||'[]')),put=c=>{c=norm(c);localStorage.cart=JSON.stringify(c);window.cart=c;count()};
-function count(){const n=get().filter(i=>!i.parent).reduce((s,i)=>s+i.q,0),l=$('#cartlink');if(l)l.textContent='Cart ('+n+')'}
+function count(){const n=get().filter(i=>!i.parent).reduce((s,i)=>s+i.q,0),l=$('#cartlink');if(l){var b=document.getElementById('cartn');if(b){b.textContent=n;b.hidden=!n}l.setAttribute('aria-label','Cart, '+n+(n===1?' item':' items'))}}
 const sub=c=>c.reduce((s,i)=>s+i.p*i.q,0);
 function remove(k){const c=get(),i=c[k];if(!i)return;put(c.filter((x,j)=>j!==k&&!(i.bid&&x.parent===i.bid)))}
 function step(k,d){const c=get(),i=c[k];if(!i)return;i.q=Math.max(0,i.q+d);if(!i.q){remove(k);return}put(c)}
